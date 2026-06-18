@@ -10,14 +10,19 @@ window.addEventListener('scroll', () => {
 // ===== Mobile nav toggle =====
 const navToggle = document.getElementById('navToggle');
 const navBackdrop = document.getElementById('navBackdrop');
+const navMenu = document.getElementById('navMenu');
 
 function closeNav() {
   document.body.classList.remove('nav-open');
   navToggle.setAttribute('aria-expanded', 'false');
+  navToggle.setAttribute('aria-label', 'Menu openen');
+  navMenu.setAttribute('aria-hidden', 'true');
 }
 function openNav() {
   document.body.classList.add('nav-open');
   navToggle.setAttribute('aria-expanded', 'true');
+  navToggle.setAttribute('aria-label', 'Menu sluiten');
+  navMenu.setAttribute('aria-hidden', 'false');
 }
 navToggle.addEventListener('click', () => {
   document.body.classList.contains('nav-open') ? closeNav() : openNav();
