@@ -224,6 +224,10 @@ body::after {
   letter-spacing: -0.01em;
 }
 
+.nav-menu {
+  display: contents;
+}
+
 .nav-links {
   display: flex;
   gap: 36px;
@@ -250,13 +254,17 @@ body::after {
   border: none;
   cursor: pointer;
   padding: 8px;
+  z-index: 101;
 }
 .nav-toggle span {
   width: 22px; height: 2px;
   background: var(--text);
   border-radius: 2px;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), opacity 0.3s ease;
 }
+body.nav-open .nav-toggle span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+body.nav-open .nav-toggle span:nth-child(2) { opacity: 0; }
+body.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
 /* ===== Hero ===== */
 .hero {
@@ -994,25 +1002,61 @@ body.modal-open {
 }
 
 @media (max-width: 760px) {
-  .nav-links, .btn-nav { display: none; }
   .nav-toggle { display: flex; }
   .cursor-glow { display: none; }
 
-  .navbar.menu-open .nav-links {
+  body.nav-open { overflow: hidden; }
+
+  .nav-menu {
     display: flex;
     flex-direction: column;
-    position: absolute;
+    gap: 24px;
+    position: fixed;
     top: 76px; left: 0; right: 0;
+    max-height: calc(100vh - 76px);
+    overflow-y: auto;
     background: rgba(6,6,10,0.97);
+    backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--border);
-    padding: 24px;
-    gap: 20px;
+    padding: 28px 24px 32px;
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-12px);
+    pointer-events: none;
+    transition: opacity 0.35s cubic-bezier(0.16,1,0.3,1), transform 0.35s cubic-bezier(0.16,1,0.3,1), visibility 0.35s ease;
   }
-  .navbar.menu-open .btn-nav {
-    display: inline-flex;
-    position: absolute;
-    top: 150px;
-    left: 24px;
+  body.nav-open .nav-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    gap: 22px;
+    font-size: 1rem;
+  }
+
+  .nav-menu .btn-nav {
+    width: 100%;
+    justify-content: center;
+    padding: 14px 22px;
+  }
+
+  .nav-backdrop {
+    position: fixed;
+    inset: 76px 0 0 0;
+    background: rgba(0,0,0,0.55);
+    z-index: 95;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s ease, visibility 0.35s ease;
+  }
+  body.nav-open .nav-backdrop {
+    opacity: 1;
+    visibility: visible;
   }
 
   .cards-grid { grid-template-columns: 1fr; }

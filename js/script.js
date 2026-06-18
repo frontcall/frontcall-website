@@ -9,12 +9,25 @@ window.addEventListener('scroll', () => {
 
 // ===== Mobile nav toggle =====
 const navToggle = document.getElementById('navToggle');
-const navbar = document.querySelector('.navbar');
+const navBackdrop = document.getElementById('navBackdrop');
+
+function closeNav() {
+  document.body.classList.remove('nav-open');
+  navToggle.setAttribute('aria-expanded', 'false');
+}
+function openNav() {
+  document.body.classList.add('nav-open');
+  navToggle.setAttribute('aria-expanded', 'true');
+}
 navToggle.addEventListener('click', () => {
-  navbar.classList.toggle('menu-open');
+  document.body.classList.contains('nav-open') ? closeNav() : openNav();
 });
-document.querySelectorAll('.nav-links a').forEach(link => {
-  link.addEventListener('click', () => navbar.classList.remove('menu-open'));
+navBackdrop.addEventListener('click', closeNav);
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeNav();
+});
+document.querySelectorAll('.nav-menu a').forEach(link => {
+  link.addEventListener('click', closeNav);
 });
 
 // ===== Cursor glow (desktop only) =====
