@@ -373,41 +373,6 @@ body.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate
   flex-wrap: wrap;
 }
 
-.scroll-indicator {
-  position: absolute;
-  bottom: 36px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  color: var(--text-faint);
-  font-size: 0.78rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  z-index: 2;
-}
-.scroll-line {
-  width: 1px;
-  height: 36px;
-  background: linear-gradient(180deg, var(--text-faint), transparent);
-  position: relative;
-  overflow: hidden;
-}
-.scroll-line::after {
-  content: '';
-  position: absolute;
-  top: -100%; left: 0;
-  width: 100%; height: 100%;
-  background: linear-gradient(180deg, transparent, var(--blue));
-  animation: scrollMove 2.2s ease-in-out infinite;
-}
-@keyframes scrollMove {
-  0% { top: -100%; }
-  100% { top: 100%; }
-}
-
 /* ===== Section headers ===== */
 .section-header {
   text-align: center;
