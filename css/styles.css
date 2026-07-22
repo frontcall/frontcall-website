@@ -671,12 +671,39 @@ body.modal-open {
   background: var(--purple);
   box-shadow: 0 0 8px var(--purple);
   animation: travel 3s linear infinite;
+  animation-play-state: paused;
+  opacity: 0;
 }
 @keyframes travel {
   0% { left: 0; opacity: 0; }
   10% { opacity: 1; }
   90% { opacity: 1; }
   100% { left: 100%; opacity: 0; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Connector draws itself left-to-right on reveal instead of just fading in,
+     so the three steps read as a sequence rather than three separate blocks. */
+  .step-connector.fade-in {
+    scale: 0.03 1;
+    transform-origin: left center;
+  }
+  .step-connector.fade-in.is-visible {
+    scale: 1 1;
+  }
+  .step-connector.is-visible::after {
+    animation-play-state: running;
+    opacity: 1;
+    transition: opacity 0.3s ease 0.9s;
+  }
+
+  .step.is-visible .step-number {
+    animation: stepNumberPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.35s backwards;
+  }
+  @keyframes stepNumberPop {
+    0% { scale: 0; rotate: -20deg; }
+    100% { scale: 1; rotate: 0deg; }
+  }
 }
 
 /* ===== Waarom Frontcall ===== */

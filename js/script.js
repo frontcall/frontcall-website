@@ -45,10 +45,22 @@ if (window.matchMedia('(pointer: fine)').matches) {
 
 // ===== Fade-in on scroll =====
 const fadeEls = document.querySelectorAll('.fade-in');
+
+// Stagger index is each element's position among its fade-in siblings, not
+// the IntersectionObserver batch index — the batch only groups elements that
+// cross the threshold in the exact same frame, so on a slow scroll every
+// element arrives alone (index 0) and the intended cascade never shows.
+const fadeGroupIndex = new Map();
+fadeEls.forEach((el) => {
+  const siblings = Array.from(el.parentElement.children).filter(c => c.classList.contains('fade-in'));
+  fadeGroupIndex.set(el, siblings.indexOf(el));
+});
+
 const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry, i) => {
+  entries.forEach((entry) => {
     if (entry.isIntersecting) {
-      entry.target.style.transitionDelay = `${Math.min(i, 6) * 90}ms`;
+      const idx = fadeGroupIndex.get(entry.target) ?? 0;
+      entry.target.style.transitionDelay = `${Math.min(idx, 6) * 90}ms`;
       entry.target.classList.add('is-visible');
       observer.unobserve(entry.target);
     }
